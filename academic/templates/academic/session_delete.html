@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Are you sure you want to delete {{session.name}} Session?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" value="delete" class="bg-red-800 text-white px-4 py-2 rounded-md mt-2">Delete, Yes</button>
+    </form>
+    <a href="{% url 'session-list-create-update' %}">Back to List</a>
+
+{% endblock content %}

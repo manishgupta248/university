@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Academic Session {% endblock title %}
+
+{% block content %}
+
+<h2 class="text-xl text-red-900 font-semibold mt-8 mb-4">{% if edit_academic_session %}Edit{% else %}Create{% endif %} Academic Session</h2>
+<form method="POST" class="bg-white p-4 ">
+    {% csrf_token %}
+    <div class="grid md:grid-cols-4 md:gap-6">
+        <div class="mb-4">
+            <label for="id_name" class="block mb-2 font-medium text-gray-900 dark:text-white">Session Name</label>
+            <input type="text" name="name" id="id_name" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.name.value }}">
+            {% if form.name.errors %}
+                <div class="text-red-600 text-sm">{{ form.name.errors }}</div>
+            {% endif %}
+            </div>
+        <div class="mb-4">
+            <label for="id_start_date" class="block mb-2 font-medium text-gray-900 dark:text-white">Start Date</label>
+            <input type="date" name="start_date" id="id_start_date" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.start_date.value }}">
+            {% if form.start_date.errors %}
+                <div class="text-red-600 text-sm">{{ form.start_date.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <label for="id_end_date" class="block mb-2 font-medium text-gray-900 dark:text-white">End Date</label>
+            <input type="date" name="end_date" id="id_end_date" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.end_date.value }}">
+            {% if form.end_date.errors %}
+                <div class="text-red-600 text-sm">{{ form.end_date.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-4">
+            <label for="id_is_active" class="block mb-2 font-medium text-gray-900 mx-12 dark:text-white">Active</label>
+            <input type="checkbox" name="is_active" id="id_is_active" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" {% if form.is_active.value %}checked{% endif %}>
+            {% if form.is_active.errors %}
+                <div class="text-red-600 text-sm">{{ form.is_active.errors }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-2">{% if edit_academic_session %}Update{% else %}Create{% endif %}</button>
+</form>
+
+<!-- List View Section -->
+<hr class="border-t-2 border-[#800000] my-4">
+<h2 class="text-xl text-red-900 font-semibold my-3 mb-4">Academic Sessions</h2>   
+<table class="min-w-full bg-white shadow-md border border-[#800000] rounded-lg">
+    <thead>
+        <tr class="bg-[#800000] text-white font-semibold  " >
+            <th class="px-4 py-2  border border-gray-900">Name</th>
+            <th class="px-4 py-2  border border-gray-900">Start Date</th>
+            <th class="px-4 py-2  border border-gray-900">End Date</th>
+            <th class="px-4 py-2  border border-gray-900">Active</th>
+            <th class="px-4 py-2  border border-gray-900">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for academic_session in academic_sessions %}
+        <tr class="hover:bg-gray-100 ">
+            <td class="px-4 py-2  border border-[#800000]">{{ academic_session.name }}</td>
+            <td class="px-4 py-2  border-[#800000]">{{ academic_session.start_date }}</td>
+            <td class="px-4 py-2 border border-[#800000]">{{ academic_session.end_date }}</td>
+            <td class="px-4 py-2 border border-[#800000]">{{ academic_session.is_active }}</td>
+            <td class="px-4 py-2 border border-[#800000]">
+                <a href="{% url 'session-update' academic_session.id %}" class="text-yellow-600 hover:underline mr-2">Edit</a> |
+                <a href="{% url 'session-delete' academic_session.id %}" class="text-yellow-600 hover:underline mr-2">Delete</a>
+                 
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+{% endblock content %}
