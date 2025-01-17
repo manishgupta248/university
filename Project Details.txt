@@ -1,0 +1,11 @@
+First Step: Project Setup
+Create a new directory for your project: mkdir University
+Navigate into the directory: cd University
+Create a Virtual Environment:   D:\Django-24\university> py -m venv .venv
+Activate the environment:       D:\Django-24\university> .venv\Scripts\activ
+Install Django:                 (.venv) PS D:\Django-24\university> py -m pip install django
+Create a Django Project:        (.venv) PS D:\Django-24\university> django-admin startproject university .
+Verify Installation:            (.venv) PS D:\Django-24\university> py manage.py runserver
+Open your web browser and visit http://127.0.0.1:8000/ :You should see the default Django welcome page
+
+Second Step Create a GitHub Repository:
