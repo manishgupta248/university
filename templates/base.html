@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} University ERP {% endblock title %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block head %}    {% endblock head %}
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+     <!-- Navbar --> 
+     {% include 'navbar.html' %} 
+
+     <div class="flex flex-grow"> 
+        <!-- Left Sidebar --> 
+        <aside class="w-1/6 bg-gray-50 font-medium text-red-900 p-4"> 
+            {% include 'sidebar.html' %} 
+        </aside> 
+        <!-- Main Content --> 
+        <main class="w-4/6 p-6 ml-20"> 
+            {% block content %} {% endblock %} 
+        </main> 
+
+        <!-- Right Sidebar --> 
+        <aside class="w-1/6 bg-gray-50 text-red-900 p-4"> 
+            {% include 'right_sidebar.html' %} 
+        </aside>
+    </div>
+    <!-- Footer --> 
+    {% include 'footer.html' %} 
+</body>
+</html>
