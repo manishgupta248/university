@@ -9,3 +9,19 @@ Verify Installation:            (.venv) PS D:\Django-24\university> py manage.py
 Open your web browser and visit http://127.0.0.1:8000/ :You should see the default Django welcome page
 
 Second Step Create a GitHub Repository:
+Install Git: If Git is not installed on your system, download and install it from git-scm.com.
+Check Installation: Run git --version in your terminal to verify installation.
+initializes a Git repository in your project:   D:\Django-24\university> git init
+Create a .gitignore File in the root of your project. : add .venv
+Commit Your Changes:                            D:\Django-24\university> git add .
+Commit the changes:    D:\Django-24\university> git commit -m "1 Initial Project Setup"    
+Create a Repository on GitHub-> Log in to your GitHub account->Click the + icon (top-right) > New repository.
+Name your repository and set it to public or private.->Click Create repository.
+Connect Local Repository to GitHub:    D:\Django-24\university> git remote add origin https://github.com/manishgupta248/university.git  
+Push your code to GitHub:       D:\Django-24\university> git branch -M main
+D:\Django-24\university> git push -u origin main
+-------------------------------------------------------------------------------
+Setting up user authentication with additional fields like email and mobile number 
+------------------------------------------------------------------------------------
+D:\Django-24\university> py manage.py startapp users
+Define a custom user model that extends Django's built-in AbstractUser or AbstractBaseUser models:
