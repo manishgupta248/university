@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Programs-Semester{% endblock title %}
+
+{% block content %}
+
+<h2 class="text-xl text-red-900 font-semibold mt-8 mb-4">{% if edit_program_semester %}Edit{% else %}Create{% endif %} Program-Semester</h2>
+<form method="POST" class="bg-white p-4 ">
+    {% csrf_token %}
+
+    <div class="grid md:grid-cols-4 md:gap-6">
+
+        <div class="mb-4">
+                <label for="id_program" class="block mb-2 font-medium text-gray-900 dark:text-white">Program</label>
+                <select name="program" id="id_program" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {% for program in form.program.field.queryset %}
+                        <option value="{{ program.id }}" {% if program.id == form.program.value %}selected{% endif %}>{{ program.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.program.errors %}
+                    <div class="text-red-600 text-sm">{{ form.program.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <label for="id_session" class="block mb-2 font-medium text-gray-900 dark:text-white">Academic Session</label>
+                <select name="session" id="id_session" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {% for session in form.session.field.queryset %}
+                        <option value="{{ session.id }}" {% if session.id == form.session.value %}selected{% endif %}>{{ session.name }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.session.errors %}
+                    <div class="text-red-600 text-sm">{{ form.session.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <label for="id_semester" class="block mb-2 font-medium text-gray-900 dark:text-white">Semester </label>
+                <select name="semester" id="id_semester" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {% for value, display in form.semester.field.choices %}
+                        <option value="{{ value }}" {% if value == form.semester.value %}selected{% endif %}>{{ display }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.semester.errors %}
+                    <div class="text-red-600 text-sm">{{ form.semester.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-2">{% if edit_program_semester %}Update{% else %}Create{% endif %}</button>
+    </form>
+
+<!-- List View Section -->
+<hr class="border-t-2 border-[#800000] my-3">
+<h2 class="text-xl text-red-900 font-semibold my-3 mb-4">Program-Semester List</h2>   
+<table class="min-w-full bg-white shadow-md border border-[#800000] rounded-lg">
+    <thead>
+        <tr class="bg-[#800000] text-white font-semibold  " >
+            <th class="px-4 py-2  border border-gray-900">Program Semester Name</th>
+            <th class="px-4 py-2  border border-gray-900">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for program_semester in program_semesters %}
+        <tr class="hover:bg-gray-100 ">
+            <td class="px-4 py-2  border border-[#800000]">{{ program_semester }}</td>
+            <td class="px-4 py-2 border border-[#800000]">
+                <a href="{% url 'program-semester-update' program_semester.id %}" class="text-yellow-600 hover:underline mr-2">Edit</a> |
+                <a href="{% url 'program-semester-delete' program_semester.id %}" class="text-yellow-600 hover:underline mr-2">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+{% endblock content %}

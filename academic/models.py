@@ -49,3 +49,12 @@ class Program(models.Model):
 
     def __str__(self):
         return self.name
+#=================================================================================
+class ProgramSemester(models.Model):
+    program = models.ForeignKey(Program, on_delete=models.CASCADE, related_name='semesters')
+    session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, related_name='semesters')
+    semester = models.PositiveIntegerField(choices=[(i, str(i)) for i in range(1, 9)])
+    class Meta: 
+        unique_together = ('program', 'semester', 'session') 
+    def __str__(self): 
+        return f"{self.program.name} - Semester - {self.semester} ({self.session.name} )"

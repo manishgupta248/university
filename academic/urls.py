@@ -17,4 +17,9 @@ urlpatterns = [
     path('programs/create/', views.program_list_create_update, name='program-list-create-update'),
     path('programs/<int:pk>/update/', views.program_list_create_update, name='program-update'),
     path('programs/<int:pk>/delete/', views.ProgramDeleteView.as_view(), name='program-delete'),
+    #--------------------------------------------------------
+    path('program_semester/', views.program_semester_list_create_update, name='program-semester-list-create-update'),
+    path('program_semester/create/', views.program_semester_list_create_update, name='program-semester-list-create-update'),
+    path('program_semester/<int:pk>/update/', views.program_semester_list_create_update, name='program-semester-update'),
+    path('program_semester/<int:pk>/delete/', views.ProgramSemesterDeleteView.as_view(), name='program-semester-delete'),
 ]
