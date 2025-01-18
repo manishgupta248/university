@@ -1,5 +1,5 @@
 from django import forms
-from .models import AcademicSession, Department, Program, ProgramSemester
+from .models import AcademicSession, Department, Program, ProgramSemester, Course
 
 # Create Academic Session form
 class AcademicSessionForm(forms.ModelForm):
@@ -38,7 +38,16 @@ class ProgramSemesterForm(forms.ModelForm):
             'session': forms.Select(attrs={'class': 'form-control'}),
             'semester': forms.Select(attrs={'class': 'form-control'}),
         }
-        
-
+ #==========================================================================
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['name', 'code', 'credit', 'nature', 'type']
+        widgets = {
+            'credit': forms.Select(attrs={'class': 'form-control'}),
+            'nature': forms.Select(attrs={'class': 'form-control'}),
+            'type': forms.Select(attrs={'class': 'form-control'}),
+        }       
+#=============================================================================
 
         

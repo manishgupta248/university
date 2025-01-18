@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import AcademicSession, Department, Program, ProgramSemester
-from .forms import AcademicSessionForm, DepartmentForm, ProgramForm, ProgramSemesterForm
+from .models import AcademicSession, Department, Program, ProgramSemester, Course
+from .forms import AcademicSessionForm, DepartmentForm, ProgramForm, ProgramSemesterForm, CourseForm
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DeleteView, DetailView
 from django.urls import reverse_lazy
@@ -127,3 +127,32 @@ class ProgramSemesterDeleteView(DeleteView):
     template_name = "academic/program_semester_delete.html"
     success_url = reverse_lazy('program-semester-list-create-update')
 #====================================================================================
+def course_semester_list_create_update(request, pk=None):
+    if pk:
+        course = get_object_or_404(Course, pk=pk)
+    else:
+        course = None
+
+    if request.method == 'POST':
+        if course:
+            form = CourseForm(request.POST, instance=course)
+        else:
+            form = CourseForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('course-list-create-update')
+
+    else:
+        if course:
+            form = CourseForm(instance=course)
+        else:
+            form = CourseForm()
+
+    courses = Course.objects.all()
+    return render(request, 'academic/course_list_create_update.html', {'form': form, 'courses': courses, 'edit_course': course})
+
+class CourseDeleteView(DeleteView):
+    model = Course
+    template_name = "academic/course_delete.html"
+    success_url = reverse_lazy('course-list-create-update')

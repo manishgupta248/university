@@ -58,3 +58,30 @@ class ProgramSemester(models.Model):
         unique_together = ('program', 'semester', 'session') 
     def __str__(self): 
         return f"{self.program.name} - Semester - {self.semester} ({self.session.name} )"
+#=========================================================================================
+class Course(models.Model):
+    NATURE_CHOICES = [
+        ('Theory', 'Theory'),
+        ('Lab', 'Lab'),
+        ('Project', 'Project'),
+        ('Seminar', 'Seminar'),
+        ('Workshop', 'Workshop'),
+        ('Training', 'Training'),
+        ('Other', 'Other'),
+    ]
+    TYPE_CHOICES =[
+        ('DS','Dicipline Specific'),
+        ('AEC','Ability Enhancement Course'),
+        ('VAC','Value Added Course'),
+        ('Elective','Value Added Course'),
+        ('Other','Other'),
+    ]
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=10, unique=True)
+    credit = models.PositiveIntegerField(choices=[(i, str(i)) for i in range(0, 21)])
+    nature = models.CharField(max_length=8, choices=NATURE_CHOICES, default='Theory')
+    type = models.CharField(max_length=12, choices=TYPE_CHOICES, default='DS')
+    program_semesters = models.ManyToManyField(ProgramSemester, related_name='subjects', blank=True)
+
+    def __str__(self):
+        return self.name
