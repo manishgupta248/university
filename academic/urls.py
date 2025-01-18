@@ -12,4 +12,9 @@ urlpatterns = [
     path('departments/create/', views.department_list_create_update, name='department-list-create-update'),
     path('departments/<int:pk>/update/', views.department_list_create_update, name='department-update'),
     path('departments/<int:pk>/delete/', views.DepartmentDeleteView.as_view(), name='department-delete'),
+    #----------------------------------------------------
+    path('programs/', views.program_list_create_update, name='program-list-create-update'),
+    path('programs/create/', views.program_list_create_update, name='program-list-create-update'),
+    path('programs/<int:pk>/update/', views.program_list_create_update, name='program-update'),
+    path('programs/<int:pk>/delete/', views.ProgramDeleteView.as_view(), name='program-delete'),
 ]

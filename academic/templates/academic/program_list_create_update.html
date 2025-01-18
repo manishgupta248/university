@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Academic Programs{% endblock title %}
+
+{% block content %}
+
+<h2 class="text-xl text-red-900 font-semibold mt-8 mb-4">{% if edit_program %}Edit{% else %}Create{% endif %} Academic Program</h2>
+<form method="POST" class="bg-white p-4 ">
+    {% csrf_token %}
+
+    <div class="grid md:grid-cols-4 md:gap-6">
+        <div class="mb-4">
+            <label for="id_name" class="block mb-2 font-medium text-gray-900 dark:text-white">Program Name</label>
+            <input type="text" name="name" id="id_name" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.name.value }}">
+            {% if form.name.errors %}
+                <div class="text-red-600 text-sm">{{ form.name.errors }}</div>
+            {% endif %}
+            </div>
+        <div class="mb-4">
+                <label for="id_duration" class="block mb-2 font-medium text-gray-900 dark:text-white">Duration </label>
+                <select name="duration" id="id_duration" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {% for value, display in form.duration.field.choices %}
+                        <option value="{{ value }}" {% if value == form.duration.value %}selected{% endif %}>{{ display }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.duration.errors %}
+                    <div class="text-red-600 text-sm">{{ form.duration.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <label for="id_level" class="block mb-2 font-medium text-gray-900 dark:text-white">level </label>
+                <select name="level" id="id_level" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {% for value, display in form.level.field.choices %}
+                        <option value="{{ value }}" {% if value == form.level.value %}selected{% endif %}>{{ display }}</option>
+                    {% endfor %}
+                </select>
+                {% if form.level.errors %}
+                    <div class="text-red-600 text-sm">{{ form.level.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <label for="id_intake" class="block mb-2 font-medium text-gray-900 dark:text-white">Intake</label>
+                <input type="number" name="intake" id="id_intake" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ form.intake.value }}">
+                {% if form.intake.errors %}
+                    <div class="text-red-600 text-sm">{{ form.intake.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-2">{% if edit_program %}Update{% else %}Create{% endif %}</button>
+    </form>
+
+<!-- List View Section -->
+<hr class="border-t-2 border-[#800000] my-3">
+<h2 class="text-xl text-red-900 font-semibold my-3 mb-4">Academic Programs</h2>   
+<table class="min-w-full bg-white shadow-md border border-[#800000] rounded-lg">
+    <thead>
+        <tr class="bg-[#800000] text-white font-semibold  " >
+            <th class="px-4 py-2  border border-gray-900">Program Name</th>
+            <th class="px-4 py-2  border border-gray-900">Duration</th>
+            <th class="px-4 py-2  border border-gray-900">Level</th>
+            <th class="px-4 py-2  border border-gray-900">Intake</th>
+            <th class="px-4 py-2  border border-gray-900">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for program in programs %}
+        <tr class="hover:bg-gray-100 ">
+            <td class="px-4 py-2  border border-[#800000]">{{ program.name }}</td>
+            <td class="px-4 py-2 border border-[#800000]">{{ program.duration }}</td>
+            <td class="px-4 py-2 border border-[#800000]">{{ program.level }}</td>
+            <td class="px-4 py-2 border border-[#800000]">{{ program.intake }}</td>
+            <td class="px-4 py-2 border border-[#800000]">
+                <a href="{% url 'program-update' program.id %}" class="text-yellow-600 hover:underline mr-2">Edit</a> |
+                <a href="{% url 'program-delete' program.id %}" class="text-yellow-600 hover:underline mr-2">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+{% endblock content %}

@@ -11,7 +11,7 @@ class AcademicSession(models.Model):
 
     def __str__(self):
         return self.name 
- 
+#===================================================================================== 
 # Create Academic Department Model    
 class Department(models.Model):
     FACULTY_CHOICES = [
@@ -28,6 +28,24 @@ class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
     code = models.CharField(max_length=10, unique=True)
     faculty = models.CharField(max_length=10, choices=FACULTY_CHOICES, default='OTHER')
+
+    def __str__(self):
+        return self.name
+#================================================================================
+class Program(models.Model):
+    LEVEL_CHOICES = [
+        ('UG', 'Undergraduate'),
+        ('PG', 'Postgraduate'),
+        ('PhD', 'Doctoral'),
+        ('PGD', 'Post Graduate Diploma'),
+        ('DIP', 'Diploma'),
+        ('CRT', 'Certificate'),
+        ('Other', 'Other'),
+    ]
+    name = models.CharField(max_length=50)
+    duration = models.PositiveIntegerField(choices=[(i, str(i)) for i in range(1, 7)])
+    level = models.CharField(max_length=6, choices=LEVEL_CHOICES, default='UG')
+    intake = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.name
