@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import AcademicSession
-from .forms import AcademicSessionForm
+from .models import AcademicSession, Department
+from .forms import AcademicSessionForm, DepartmentForm
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import DeleteView, DetailView
 from django.urls import reverse_lazy
@@ -36,8 +36,34 @@ class SessionDeleteView(DeleteView):
     template_name = "academic/session_delete.html"
     success_url = reverse_lazy('session-list-create-update')
 
-class SessionDetailView(DetailView):
-    model = AcademicSession
-    template_name = "academic/session_detail.html"
-    context_object_name = 'academic_session'
 #=======================================================================================S
+
+def department_list_create_update(request, pk=None):
+    if pk:
+        department = get_object_or_404(Department, pk=pk)
+    else:
+        department = None
+
+    if request.method == 'POST':
+        if department:
+            form = DepartmentForm(request.POST, instance=department)
+        else:
+            form = DepartmentForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('department-list-create-update')
+
+    else:
+        if department:
+            form = DepartmentForm(instance=department)
+        else:
+            form = DepartmentForm()
+
+    departments = Department.objects.all()
+    return render(request, 'academic/department_list_create_update.html', {'form': form, 'departments': departments, 'edit_department': department})  
+
+class DepartmentDeleteView(DeleteView):
+    model = Department
+    template_name = "academic/department_delete.html"
+    success_url = reverse_lazy('department-list-create-update')  

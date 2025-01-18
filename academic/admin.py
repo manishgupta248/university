@@ -9,6 +9,10 @@ class AcademicSessionResource(resources.ModelResource):
     class Meta:
         model = models.AcademicSession
 
+class DepartmentResource(resources.ModelResource):
+    class Meta:
+        model = models.Department
+
 @admin.register(models.AcademicSession)
 class AcademicSessionAdmin(ImportExportModelAdmin):
     resource_class = AcademicSessionResource
@@ -16,3 +20,11 @@ class AcademicSessionAdmin(ImportExportModelAdmin):
     search_fields = ('name', 'is_active')
     list_filter = ('is_active', 'start_date', 'end_date')
     ordering = ('-name',)
+
+@admin.register(models.Department)
+class DepartmentAdmin(ImportExportModelAdmin):
+    resource_class = DepartmentResource
+    list_display = ('name', 'code', 'faculty')
+    search_fields = ('name', 'code', 'faculty')
+    list_filter = ('faculty',)
+    ordering = ('name',)
