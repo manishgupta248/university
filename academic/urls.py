@@ -23,8 +23,15 @@ urlpatterns = [
     path('program_semester/<int:pk>/update/', views.program_semester_list_create_update, name='program-semester-update'),
     path('program_semester/<int:pk>/delete/', views.ProgramSemesterDeleteView.as_view(), name='program-semester-delete'),
     #----------------------------------------------------------------
-    path('courses/', views.course_semester_list_create_update, name='course-list-create-update'),
-    path('courses/create/', views.course_semester_list_create_update, name='course-list-create-update'),
-    path('courses/<int:pk>/update/', views.course_semester_list_create_update, name='course-update'),
+    path('courses/', views.course_list_create_update, name='course-list-create-update'),
+    path('courses/create/', views.course_list_create_update, name='course-list-create-update'),
+    path('courses/<int:pk>/update/', views.course_list_create_update, name='course-update'),
     path('courses/<int:pk>/delete/', views.CourseDeleteView.as_view(), name='course-delete'),
+    #---------------------------------------------------------------------
+    path('syllabus/', views.syllabus_list_create_update, name='syllabus-list-create-update'),
+    path('syllabus/create/', views.syllabus_list_create_update, name='syllabus-list-create-update'),
+    path('syllabus/<int:pk>/update/', views.syllabus_list_create_update, name='syllabus-update'),
+    path('syllabus/<int:pk>/delete/', views.SyllabusDeleteView.as_view(), name='syllabus-delete'),
+
+
 ]

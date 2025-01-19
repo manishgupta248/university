@@ -85,3 +85,11 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+#==========================================================================
+class Syllabus(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='syllabus')
+    upload_syllabus = models.FileField(upload_to='syllabi/') 
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Syllabus of {self.course.name} ({self.course.code})"

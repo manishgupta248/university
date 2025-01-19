@@ -1,5 +1,6 @@
 from django import forms
-from .models import AcademicSession, Department, Program, ProgramSemester, Course
+from .models import (AcademicSession, Department, Program, 
+                     ProgramSemester, Course, Syllabus)
 
 # Create Academic Session form
 class AcademicSessionForm(forms.ModelForm):
@@ -49,5 +50,17 @@ class CourseForm(forms.ModelForm):
             'type': forms.Select(attrs={'class': 'form-control'}),
         }       
 #=============================================================================
+class SyllabusForm(forms.ModelForm):
+    class Meta:
+        model = Syllabus
+        fields = ['course', 'upload_syllabus']
+        widgets = { 
+            'course': forms.Select(attrs={'class': 'form-control'}), 
+            'upload_syllabus': forms.ClearableFileInput(attrs={'class': 'form-control'})
+        }
 
+    # def __init__(self, *args, **kwargs):
+    #     super(SyllabusForm, self).__init__(*args, **kwargs)
+    #     self.fields['subject'].queryset = Course.objects.all()
+#======================================================================
         

@@ -1,0 +1,23 @@
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+
+# Ignore virtual environment directories
+venv/
+env/
+
+# Ignore Django migrations
+*/migrations/*.py
+*/migrations/*.pyc
+
+# Ignore database files
+*.sqlite3
+
+# Ignore media files
+/media/
+
+# Ignore environment variables files
+.env
+
+# Ignore .DS_Store (macOS Finder attributes)
+.DS_Store

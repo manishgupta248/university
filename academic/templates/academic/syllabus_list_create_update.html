@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Course Syllabus{% endblock title %}
+
+{% block content %}
+
+<h2 class="text-xl text-red-900 font-semibold mt-8 mb-4">{% if edit_department %}Edit{% else %}Create{% endif %} Academic Department</h2>
+<form method="POST" enctype="multipart/form-data" class="bg-white p-4 ">
+    {% csrf_token %}
+
+    <div class="grid md:grid-cols-3 md:gap-6">
+        <div class="mb-4">
+            <label for="course" class="block mb-2 font-medium text-gray-900 dark:text-white">Course</label>
+            <select id="course" name="course" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                {% for course in form.course.field.queryset %}
+                <option value="{{ course.pk }}" {% if course.pk == form.course.value %}selected{% endif %}>{{ course.name }} ({{course.code}})</option>
+                {% endfor %}
+            </select>
+            {% if form.course.errors %}
+                <div class="text-red-600 text-sm">{{ form.course.errors }}</div>
+            {% endif %}
+            </div>
+
+        <div class="mb-4">
+            <label for="upload_syllabus" class="block mb-2 font-medium text-gray-900 dark:text-white">Upload Syllabus</label>
+            <input type="file" id="upload_syllabus" name="upload_syllabus" class="bg-gray-50 border border-gray-900 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            {% if form.upload_syllabus.errors %}
+                <div class="text-red-600 text-sm">{{ form.upload_syllabus.errors }}</div>
+            {% endif %}
+        </div>
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-2">{% if edit_program %}Update{% else %}Upload{% endif %}</button>
+    </form>
+
+<!-- List View Section -->
+<hr class="border-t-2 border-[#800000] my-3">
+<h2 class="text-xl text-red-900 font-semibold my-3 mb-4">Course Syllabus</h2>   
+<table class="min-w-full bg-white shadow-md border border-[#800000] rounded-lg">
+    <thead>
+        <tr class="bg-[#800000] text-white font-semibold  " >
+            <th class="px-4 py-2  border border-gray-900">Course Code</th>
+            <th class="px-4 py-2  border border-gray-900">Course Name</th>
+            <th class="px-4 py-2  border border-gray-900">Uploaded At</th>
+            <th class="px-4 py-2  border border-gray-900">Download</th>
+            <th class="px-4 py-2  border border-gray-900">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for syllabus in syllabi %}
+        <tr class="hover:bg-gray-100 ">
+            <td class="px-4 py-2  border border-[#800000]"> {{syllabus.course.code}}</td>
+            <td class="px-4 py-2  border border-[#800000]">{{ syllabus.course.name }} </td>
+            <td class="px-4 py-2 border border-[#800000]">{{ syllabus.updated_at }}</td>
+            <td class="px-4 py-2 border border-[#800000]">
+                {% if syllabus.upload_syllabus %}
+                <a href="{{ syllabus.upload_syllabus.url }}" target="_blank" class="text-blue-500 hover:text-blue-800">Download Syllabus</a>
+            {% else %}
+                 No syllabus uploaded.
+            {% endif %}</td>
+            <td class="px-4 py-2 border border-[#800000]">
+                <a href="{% url 'syllabus-update' syllabus.id %}" class="text-yellow-600 hover:underline mr-2">Edit</a> |
+                <a href="{% url 'syllabus-delete' syllabus.id %}" class="text-yellow-600 hover:underline mr-2">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    
+{% endblock content %}

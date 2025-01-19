@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
-from .models import AcademicSession, Department, Program, ProgramSemester, Course
-from .forms import AcademicSessionForm, DepartmentForm, ProgramForm, ProgramSemesterForm, CourseForm
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import render, redirect, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DeleteView, DetailView
-from django.urls import reverse_lazy
+from .models import AcademicSession, Department, Program, ProgramSemester, Course, Syllabus
+from .forms import (AcademicSessionForm, DepartmentForm, ProgramForm, 
+                    ProgramSemesterForm, CourseForm, SyllabusForm)
 
 # Create your views here.
 def session_list_create_update(request, pk=None):
@@ -127,7 +127,7 @@ class ProgramSemesterDeleteView(DeleteView):
     template_name = "academic/program_semester_delete.html"
     success_url = reverse_lazy('program-semester-list-create-update')
 #====================================================================================
-def course_semester_list_create_update(request, pk=None):
+def course_list_create_update(request, pk=None):
     if pk:
         course = get_object_or_404(Course, pk=pk)
     else:
@@ -156,3 +156,37 @@ class CourseDeleteView(DeleteView):
     model = Course
     template_name = "academic/course_delete.html"
     success_url = reverse_lazy('course-list-create-update')
+#=========================================================================
+
+def syllabus_list_create_update(request, pk=None):
+    if pk:
+        syllabus = get_object_or_404(Syllabus, pk=pk)
+        #form_action = 'Update'
+    else:
+        syllabus = None
+        #form_action = 'Create'
+
+    if request.method == 'POST':
+        if syllabus:
+            form = SyllabusForm(request.POST, request.FILES, instance=syllabus)
+        else:
+            form = SyllabusForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('syllabus-list-create-update'))
+    else:
+        if syllabus:
+            form = SyllabusForm(instance=syllabus)
+        else:
+            form = SyllabusForm()
+
+    syllabi = Syllabus.objects.all()
+    return render(request, 'academic/syllabus_list_create_update.html', {'form': form,'syllabi': syllabi,'edit_syllabus': syllabus})
+
+
+class SyllabusDeleteView(DeleteView):
+    model = Syllabus
+    template_name = "academic/syllabus_delete.html"
+    success_url = reverse_lazy('syllabus-list-create-update')
+#==============================================================================
