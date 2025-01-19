@@ -1,11 +1,12 @@
 from django import forms
-from .models import (AcademicSession, Department, Program, 
-                     ProgramSemester, Course, Syllabus)
+import academic.models as models
+#from .models import (AcademicSession, Department, Program, 
+#                    ProgramSemester, Course, Syllabus)
 
 # Create Academic Session form
 class AcademicSessionForm(forms.ModelForm):
     class Meta:
-        model = AcademicSession
+        model = models.AcademicSession
         fields = ['name', 'start_date', 'end_date', 'is_active']
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
@@ -15,7 +16,7 @@ class AcademicSessionForm(forms.ModelForm):
 # Create Department form
 class DepartmentForm(forms.ModelForm):
     class Meta:
-        model = Department
+        model = models.Department
         fields = ['name', 'code', 'faculty']
         widgets = {
             'faculty': forms.Select(attrs={'class': 'form-control'}),
@@ -23,7 +24,7 @@ class DepartmentForm(forms.ModelForm):
 #==========================================================================
 class ProgramForm(forms.ModelForm):
     class Meta:
-        model = Program
+        model = models.Program
         fields =['name', 'duration', 'level', 'intake']
         widgets = {
             'duration': forms.Select(attrs={'class': 'form-control'}),
@@ -32,7 +33,7 @@ class ProgramForm(forms.ModelForm):
 #========================================================================
 class ProgramSemesterForm(forms.ModelForm):
     class Meta:
-        model = ProgramSemester
+        model = models.ProgramSemester
         fields = ['program', 'session', 'semester']
         widgets = {
             'program': forms.Select(attrs={'class': 'form-control'}),
@@ -42,7 +43,7 @@ class ProgramSemesterForm(forms.ModelForm):
  #==========================================================================
 class CourseForm(forms.ModelForm):
     class Meta:
-        model = Course
+        model = models.Course
         fields = ['name', 'code', 'credit', 'nature', 'type']
         widgets = {
             'credit': forms.Select(attrs={'class': 'form-control'}),
@@ -52,15 +53,25 @@ class CourseForm(forms.ModelForm):
 #=============================================================================
 class SyllabusForm(forms.ModelForm):
     class Meta:
-        model = Syllabus
+        model = models.Syllabus
         fields = ['course', 'upload_syllabus']
         widgets = { 
             'course': forms.Select(attrs={'class': 'form-control'}), 
             'upload_syllabus': forms.ClearableFileInput(attrs={'class': 'form-control'})
         }
-
-    # def __init__(self, *args, **kwargs):
-    #     super(SyllabusForm, self).__init__(*args, **kwargs)
-    #     self.fields['subject'].queryset = Course.objects.all()
 #======================================================================
+class AllocateSubjectsForm(forms.Form):
+    program_semester = forms.ModelChoiceField(queryset=models.ProgramSemester.objects.all(), label="Program Semester")
+    subjects = forms.ModelMultipleChoiceField(
+        queryset=models.Course.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label="Subjects",
+        to_field_name="name"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['subjects'].queryset = models.Course.objects.all()
+        self.fields['subjects'].label_from_instance = lambda obj: f"{obj.name} ({obj.code})"
+#==========================================================================================
         

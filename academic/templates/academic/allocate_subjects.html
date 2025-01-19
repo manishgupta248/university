@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Allocate Subjects{% endblock %}
+
+{% block content %}
+<h2 class="text-xl font-bold mb-4">Allocate Subjects to Program Semester</h2>
+<form method="GET" class="mb-4">
+    <label for="id_program_semester" class="block text-gray-700">Select Program Semester</label>
+    <select name="program_semester" id="id_program_semester" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onchange="this.form.submit()">
+        <option value="">Select a program semester...</option>
+        {% for ps in form.program_semester.field.queryset %}
+        <option value="{{ ps.id }}" {% if selected_program_semester and selected_program_semester.id == ps.id %}selected{% endif %}>
+            {{ ps.program.name }} - Semester {{ ps.semester }}{% if ps.session %} ({{ ps.session.name }}){% endif %}
+        </option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if selected_program_semester %}
+<h3 class="text-lg font-bold mt-8 mb-4">Allocated Subjects for {{ selected_program_semester.program.name }} - Semester {{ selected_program_semester.semester }} ({{ selected_program_semester.session.name }})</h3>
+<table class="min-w-full bg-white shadow-md rounded-lg">
+    <thead>
+        <tr>
+            <th class="px-4 py-2 border-b">Subject Name</th>
+            <th class="px-4 py-2 border-b">Code</th>
+            <th class="px-4 py-2 border-b">Credits</th>
+            <th class="px-4 py-2 border-b">Type</th>
+            <th class="px-4 py-2 border-b">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for subject in allocated_subjects %}
+        <tr class="hover:bg-gray-100">
+            <td class="px-4 py-2 border-b">{{ subject.name }}</td>
+            <td class="px-4 py-2 border-b">{{ subject.code }}</td>
+            <td class="px-4 py-2 border-b">{{ subject.credit }}</td>
+            <td class="px-4 py-2 border-b">{{ subject.get_type_display }}</td>
+            <td class="px-4 py-2 border-b">
+                <form method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="program_semester_id" value="{{ selected_program_semester.id }}">
+                    <button type="submit" name="remove_subject" value="{{ subject.id }}" class="text-red-600 hover:underline">Remove</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<h2 class="text-xl font-bold mt-8 mb-4">Allocate Subjects to Program Semester</h2>
+<form method="POST" class="bg-white p-4 shadow-md rounded-lg">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label for="id_program_semester" class="block text-gray-700">Program Semester</label>
+        {{ form.program_semester }}
+        {% if form.program_semester.errors %}
+            <div class="text-red-600 text-sm">{{ form.program_semester.errors }}</div>
+        {% endif %} 
+    </div>
+    <div class="mb-4">
+        <label for="id_subjects" class="block text-gray-700">Subjects</label>
+        {{ form.subjects }}
+        {% if form.subjects.errors %}
+            <div class="text-red-600 text-sm">{{ form.subjects.errors }}</div>
+        {% endif %}
+    </div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md mt-2">Allocate Subjects</button>
+</form>
+{% endblock %}

@@ -32,6 +32,8 @@ urlpatterns = [
     path('syllabus/create/', views.syllabus_list_create_update, name='syllabus-list-create-update'),
     path('syllabus/<int:pk>/update/', views.syllabus_list_create_update, name='syllabus-update'),
     path('syllabus/<int:pk>/delete/', views.SyllabusDeleteView.as_view(), name='syllabus-delete'),
+    #--------------------------------------------------------------------
+    path('allocate_subjects/', views.allocate_subjects, name='allocate-subjects'),
 
 
 ]

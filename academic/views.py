@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import DeleteView, DetailView
 from .models import AcademicSession, Department, Program, ProgramSemester, Course, Syllabus
 from .forms import (AcademicSessionForm, DepartmentForm, ProgramForm, 
-                    ProgramSemesterForm, CourseForm, SyllabusForm)
+                    ProgramSemesterForm, CourseForm, SyllabusForm, AllocateSubjectsForm)
 
 # Create your views here.
 def session_list_create_update(request, pk=None):
@@ -184,9 +184,41 @@ def syllabus_list_create_update(request, pk=None):
     syllabi = Syllabus.objects.all()
     return render(request, 'academic/syllabus_list_create_update.html', {'form': form,'syllabi': syllabi,'edit_syllabus': syllabus})
 
-
 class SyllabusDeleteView(DeleteView):
     model = Syllabus
     template_name = "academic/syllabus_delete.html"
     success_url = reverse_lazy('syllabus-list-create-update')
 #==============================================================================
+def allocate_subjects(request):
+    selected_program_semester = None
+    allocated_subjects = None
+
+    form = AllocateSubjectsForm(request.POST or request.GET or None)  # Initialize the form
+
+    if request.method == 'POST':
+        if 'remove_subject' in request.POST:
+            subject_id = request.POST['remove_subject']
+            subject_to_remove = get_object_or_404(Course, pk=subject_id)
+            program_semester_id = request.POST['program_semester_id']
+            selected_program_semester = get_object_or_404(ProgramSemester, pk=program_semester_id)
+            selected_program_semester.subjects.remove(subject_to_remove)
+            allocated_subjects = selected_program_semester.subjects.all()
+        elif form.is_valid():
+            selected_program_semester = form.cleaned_data['program_semester']
+            subjects = form.cleaned_data['subjects']
+            for subject in subjects:
+                selected_program_semester.subjects.add(subject)  # Add new subjects to the existing ones
+            allocated_subjects = selected_program_semester.subjects.all()  # Get the allocated subjects
+    elif 'program_semester' in request.GET and request.GET['program_semester']:
+        try:
+            selected_program_semester = ProgramSemester.objects.get(pk=request.GET['program_semester'])
+            allocated_subjects = selected_program_semester.subjects.all()
+        except ProgramSemester.DoesNotExist:
+            selected_program_semester = None
+            allocated_subjects = None
+
+    return render(request, 'academic/allocate_subjects.html', {
+        'form': form,
+        'selected_program_semester': selected_program_semester,
+        'allocated_subjects': allocated_subjects
+    })
