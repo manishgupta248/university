@@ -3,7 +3,7 @@
 {% block title %}Course Syllabus{% endblock title %}
 
 {% block content %}
-
+<div class="flex-1">
 <h2 class="text-xl text-red-900 font-semibold mt-8 mb-4">{% if edit_department %}Edit{% else %}Create{% endif %} Academic Department</h2>
 <form method="POST" enctype="multipart/form-data" class="bg-white p-4 ">
     {% csrf_token %}
@@ -64,5 +64,6 @@
         </tr>
         {% endfor %}
     </tbody>
-    
+</table>
+</div>    
 {% endblock content %}

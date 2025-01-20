@@ -3,36 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} University ERP {% endblock title %}</title>
+    <title>{% block title %} {% endblock title %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    {% block head %}    {% endblock head %}
 </head>
+<body class="flex flex-col min-h-screen"> 
+    <!--NavBar Component-->
+    {% include "Navbar.html" %}
+    <div class="flex flex-1"> 
 
-<body class="flex flex-col min-h-screen">
+        <!--Left Sidebar-->
 
-     <!-- Navbar --> 
-     {% include 'navbar.html' %} 
-
-     <div class="flex flex-grow"> 
-        <!-- Left Sidebar --> 
-        <aside class="w-1/6 bg-gray-50 font-medium text-red-900 p-4"> 
-            {% include 'sidebar.html' %} 
-        </aside> 
-        <div class="relative h-screen"> 
-            <div class="absolute inset-y-0 left-1/2 w-px bg-gray-300">
-             </div> 
+            {% include "sidebar.html" %}
+   
+    <!--End Left Sidebar-->
+    
+    <!--Main Page Section-->
+        <div class="flex-1 p-4">
+            <main>
+                {% block content %}
+                {% endblock %}
+            </main>
         </div>
-        <!-- Main Content --> 
-        <main class="w-4/6 p-2 ml-20"> 
-            {% block content %} {% endblock %} 
-        </main> 
-
-        <!-- Right Sidebar --> 
-        <aside class="w-1/6 bg-gray-50 text-red-900 p-4"> 
-            {% include 'right_sidebar.html' %} 
-        </aside>
+<!--End of Main Page Section-->
+        <!--Right Sidebar-->
+        <div class="w-64  p-4 border-l border-gray-100">
+            {% include "right_sidebar.html" %}
+        </div>
+<!---End of Right Sidebar-->
     </div>
-    <!-- Footer --> 
-    {% include 'footer.html' %} 
+    <!--Footer Section-->
+        <div>
+            {% include "footer.html" %}
+        </div>
+        
+
+
 </body>
 </html>

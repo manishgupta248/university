@@ -3,7 +3,7 @@
 {% block title %}Courses{% endblock title %}
 
 {% block content %}
-
+<div class="flex-1">
 <h2 class="text-xl text-red-900 font-semibold mt-8 mb-4">{% if edit_course %}Edit{% else %}Create{% endif %} Course</h2>
 <form method="POST" class="bg-white p-4 ">
     {% csrf_token %}
@@ -89,5 +89,6 @@
         </tr>
         {% endfor %}
     </tbody>
-    
+</table> 
+</div>
 {% endblock content %}

@@ -3,6 +3,7 @@
 {% block title %}Programs-Semester{% endblock title %}
 
 {% block content %}
+<div class="flex-1">
 
 <h2 class="text-xl text-red-900 font-semibold mt-8 mb-4">{% if edit_program_semester %}Edit{% else %}Create{% endif %} Program-Semester</h2>
 <form method="POST" class="bg-white p-4 ">
@@ -49,6 +50,7 @@
 
 <!-- List View Section -->
 <hr class="border-t-2 border-[#800000] my-3">
+
 <h2 class="text-xl text-red-900 font-semibold my-3 mb-4">Program-Semester List</h2>   
 <table class="min-w-full bg-white shadow-md border border-[#800000] rounded-lg">
     <thead>
@@ -68,5 +70,6 @@
         </tr>
         {% endfor %}
     </tbody>
-    
+</table>
+</div> 
 {% endblock content %}
